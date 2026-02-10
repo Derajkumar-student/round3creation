@@ -412,6 +412,15 @@ else:
         except Exception:
             pass
 
+        # Periodically check whether a debugger is attached; if so, enable protections
+        try:
+            self._debugger_check_timer = QTimer(self)
+            self._debugger_check_timer.setInterval(1000)
+            self._debugger_check_timer.timeout.connect(self._check_debugger_and_protect)
+            self._debugger_check_timer.start()
+        except Exception:
+            self._debugger_check_timer = None
+
         # ========== NEW: ENHANCED WINDOW LOCK PROTECTION ==========
         # (hash and debugger locks removed)
 
